@@ -1,7 +1,7 @@
 import type { AWS } from "@serverless/typescript";
 
 import hello from "@functions/hello";
-import { DEFAULT_MAX_VERSION } from "tls";
+// import { DEFAULT_MAX_VERSION } from "tls";
 
 require("dotenv").config();
 
