@@ -46,7 +46,7 @@ const line: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
     );
   }
 
-  const body: Line.WebhookRequestBody = JSON.parse(proxyEvent.body);
+  const body: Line.WebhookRequestBody = proxyEvent.body;
 
   await Promise.all(
     body.events.map(async (event) => eventHandler(event))
