@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@line/bot-sdk": "^7.3.0",
+    "serverless": "^2.51.2"
+  }
+}
