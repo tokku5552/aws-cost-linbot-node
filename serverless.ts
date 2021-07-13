@@ -32,6 +32,13 @@ const serverlessConfiguration: AWS = {
       LINE_CHANNEL_SECRET: process.env.LINE_CHANNEL_SECRET,
     },
     lambdaHashingVersion: "20201221",
+    iamRoleStatements: [
+      {
+        Effect: "Allow",
+        Action: ["ce:MyCostExplorerRead"],
+        Resource: "*",
+      },
+    ],
   },
   // import the function via paths
   functions: { hello, line },
