@@ -16,7 +16,7 @@ const config: Line.ClientConfig = {
 };
 
 const client = new Line.Client(config);
-const crypto = require("crypto");
+// const crypto = require("crypto");
 
 async function eventHandler(event: Line.WebhookEvent): Promise<any> {
   if (event.type !== "message" || event.message.type !== "text") {
