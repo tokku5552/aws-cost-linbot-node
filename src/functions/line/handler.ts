@@ -1,5 +1,5 @@
 import "source-map-support/register";
-
+import * as AWS from "aws-sdk";
 import type { ValidatedEventAPIGatewayProxyEvent } from "@libs/apiGateway";
 // import { formatJSONResponse } from "@libs/apiGateway";
 import { middyfy } from "@libs/lambda";
@@ -18,6 +18,36 @@ const config: Line.ClientConfig = {
 const client = new Line.Client(config);
 // const crypto = require("crypto");
 
+const costexplorer = new AWS.CostExplorer();
+
+// AWSの利用料金確認
+async function checkCost(): Promise<any> {
+  const params = {
+    Granularity: "DAILY",
+    Metrics: ["UnblendedCost"],
+    GroupBy: [
+      {
+        Type: "DIMENSION",
+        Key: "SERVICE",
+      },
+    ],
+    TimePeriod: {
+      Start: "2021-07-01",
+      End: "2021-07-14",
+    },
+  };
+  let cost = costexplorer.getCostAndUsage(params, (err, data) => {
+    if (err) {
+      console.error(err, err.stack);
+      return;
+    }
+
+    console.log(data);
+  });
+  return cost;
+}
+
+// イベントハンドラー
 async function eventHandler(event: Line.WebhookEvent): Promise<any> {
   if (event.type !== "message" || event.message.type !== "text") {
     return null;
@@ -29,6 +59,7 @@ async function eventHandler(event: Line.WebhookEvent): Promise<any> {
   return client.replyMessage(event.replyToken, message);
 }
 
+// メイン処理
 const line: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
   proxyEvent
 ) => {
@@ -58,6 +89,7 @@ const line: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
     };
   });
 
+  checkCost();
   return {
     statusCode: 200,
     body: "OK",
