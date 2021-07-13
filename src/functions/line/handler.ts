@@ -34,17 +34,17 @@ const line: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
 ) => {
   console.log(JSON.stringify(proxyEvent));
   // 署名確認
-  const signature = proxyEvent.headers["X-Line-Signature"];
-  const digest = crypto
-    .createHmac("SHA256", channelSecret)
-    .update(proxyEvent.body)
-    .digest("base64");
-  if (signature != digest) {
-    throw new Line.SignatureValidationFailed(
-      "signature validation failed",
-      signature
-    );
-  }
+  // const signature = proxyEvent.headers["X-Line-Signature"];
+  // const digest = crypto
+  //   .createHmac("SHA256", channelSecret)
+  //   .update(proxyEvent.body)
+  //   .digest("base64");
+  // if (signature != digest) {
+  //   throw new Line.SignatureValidationFailed(
+  //     "signature validation failed",
+  //     signature
+  //   );
+  // }
 
   const body: Line.WebhookRequestBody = proxyEvent.body;
 
